@@ -1,12 +1,12 @@
 var Player = function() {
-    this.position = { x: 20, y: 20};
+    this.position = { x: 25, y: 25};
     this.movementSpeed = 1;
 
-    this.texture = new Image();
-    this.texture.src = 'assets/steve.png';
+    this.txBody = new Image();
+    this.txBody.src = 'assets/steve.png';
 
     this.draw = function(ctx) {
-        ctx.drawImage(this.texture, 0, 0, 15, 20, this.position.x, this.position.y, 15, 20);
+        ctx.drawImage(this.txBody, 0, 0, 15, 20, this.position.x, this.position.y, 15, 20);
     };
 
     this.update = function() {

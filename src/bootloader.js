@@ -1,11 +1,14 @@
 $(document).ready(function() {
-    Keyboard.bind();
-
-    if (isCanvasSupported()) {
-        Renderer.start();
-    } else {
+    if (!isCanvasSupported()) {
+        console.error('Canvas support not detected, refusing to start');
         $('#ohno').show();
+        return;
     }
+
+    Keyboard.bind();
+    Mouse.bind();
+
+    Renderer.start();
 });
 
 function isCanvasSupported(){
