@@ -15,6 +15,13 @@ var Renderer = {
 
         console.info('[Renderer] Canvas resolution is ' + Renderer.canvas.width + 'x' + Renderer.canvas.height + '.');
 
+        // Try to disable the "smooth" (stretched becomes blurry) scaling on the Canvas element
+        // Instead, we want a "pixelated" effect (nearest neighbor scaling)
+        Renderer.canvas.mozImageSmoothingEnabled = false;
+        Renderer.canvas.webkitImageSmoothingEnabled = false;
+        Renderer.canvas.msImageSmoothingEnabled = false;
+        Renderer.canvas.imageSmoothingEnabled = false;
+
         // Load map
         Renderer.loadMap();
 
