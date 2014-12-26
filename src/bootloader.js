@@ -1,4 +1,6 @@
 $(document).ready(function() {
+    Keyboard.bind();
+
     if (isCanvasSupported()) {
         Renderer.start();
     } else {

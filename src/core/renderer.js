@@ -45,6 +45,8 @@ var Renderer = {
 
     update: function() {
         // Update everything
+        Keyboard.update();
+
         for (var i = 0; i < Renderer.entities.length; i++) {
             var entity = Renderer.entities[i];
             entity.update();
