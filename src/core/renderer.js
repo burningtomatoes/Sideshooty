@@ -41,6 +41,10 @@ var Renderer = {
 
     loadMap: function() {
         Renderer.entities.push(new Player());
+        Renderer.entities.push(new Block(0, 0));
+        Renderer.entities.push(new Block(16, 0));
+        Renderer.entities.push(new Block(32, 0));
+        Renderer.entities.push(new Block(48, 0));
     },
 
     update: function() {
