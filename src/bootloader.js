@@ -9,6 +9,11 @@ $(document).ready(function() {
     Mouse.bind();
 
     Renderer.start();
+    Renderer.loadMap('test', function(ok) {
+        if (!ok) {
+            alert('Map could not be loaded, sorry.');
+        }
+    });
 });
 
 function isCanvasSupported(){

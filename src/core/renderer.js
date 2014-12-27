@@ -1,10 +1,16 @@
+/**
+ * The main game class, which is responsible for managing the update/draw loop.
+ * Other components are responsible for actually putting things on the screen.
+ */
 var Renderer = {
     $canvas: null,
     canvas: null,
     context: null,
 
-    entities: [],
-
+    /**
+     * Binds to the canvas element on the page, configures it and begins the update/render loop.
+     * NB: This function should normally only be called once (when the game is starting).
+     */
     start: function() {
         console.info('[Renderer] Game is starting, starting loop.');
 
@@ -22,9 +28,6 @@ var Renderer = {
         Renderer.canvas.msImageSmoothingEnabled = false;
         Renderer.canvas.imageSmoothingEnabled = false;
 
-        // Load map
-        Renderer.loadMap();
-
         // Begin the loop
         var loop = function() {
             window.requestAnimationFrame(loop);
@@ -34,37 +37,66 @@ var Renderer = {
         };
 
         loop();
-
-        // Fade in the canvas
-        Renderer.$canvas.fadeIn();
     },
 
-    loadMap: function() {
-        Renderer.entities.push(new Player());
-        Renderer.entities.push(new Block(0, 0));
-        Renderer.entities.push(new Block(16, 0));
-        Renderer.entities.push(new Block(32, 0));
-        Renderer.entities.push(new Block(48, 0));
-    },
+    /**
+     * Loads a specific map to be the current game map.
+     *
+     * @param mapId The filename of the map
+     * @param callback The callback to be invoked when the map is fully loaded and ready to render
+     */
+    loadMap: function(mapId, callback) {
+        if (callback == null) {
+            callback = function() { };
+        }
 
-    update: function() {
-        // Update everything
-        Keyboard.update();
+        console.info('[Maps] Loading map', mapId);
 
-        for (var i = 0; i < Renderer.entities.length; i++) {
-            var entity = Renderer.entities[i];
-            entity.update();
+        var doDownload = function() {
+            Map.clear();
+
+            $.get('assets/maps/' + mapId + '.json')
+                .success(function(data) {
+                    Map.setData(data);
+                    console.info('[Maps] Successfully loaded map from file, fading in...');
+                    Renderer.$canvas.fadeIn();
+                    callback(true);
+                })
+                .error(function() {
+                    console.error('[Maps] Could not load map due to a network error', mapId);
+                    callback(false);
+                });
+        };
+
+        // If the canvas element is visible, fade it out and then download.
+        // If it is not visible (e.g. the game is starting, begin download immediately).
+        if (Renderer.$canvas.is(':visible')) {
+            Renderer.$canvas.fadeOut('slow', doDownload);
+        } else {
+            doDownload();
         }
     },
 
+    /**
+     * Updates all entities on the screen.
+     * This function is responsible for performing all calculations, before the frame is drawn.
+     */
+    update: function() {
+        // Update input
+        Keyboard.update();
+        // Process the map and the entities on it
+        Map.update();
+    },
+
+    /**
+     * Renders one frame to the render context.
+     * This function is responsible for drawing everything, based on the states set in the update function.
+     */
     draw: function() {
-        // Draw everything
+        // Clear the screen with a solid color
         Renderer.context.fillStyle = "#086A87";
         Renderer.context.fillRect(0, 0, Renderer.canvas.width, Renderer.canvas.height);
-
-        for (var i = 0; i < Renderer.entities.length; i++) {
-            var entity = Renderer.entities[i];
-            entity.draw(Renderer.context);
-        }
+        // Render map entities on top
+        Map.draw(Renderer.context);
     }
 };

@@ -11,6 +11,8 @@ About the game
 ---
 This game is a side-scrolling shooter. You have to shoot the enemies. They're bad people and you're very cross with them because they stole your wife and ruined Christmas.
 
+Map data was generated using Tiled then manually modified.
+
 Building the source code
 ---
 You will need NodeJS and the Grunt CLI to build the source code.

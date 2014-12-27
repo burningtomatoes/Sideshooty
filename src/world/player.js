@@ -3,7 +3,7 @@ var Player = function() {
     this.movementSpeed = 1;
 
     this.txBody = new Image();
-    this.txBody.src = 'assets/steve.png';
+    this.txBody.src = 'assets/textures/steve.png';
 
     this.draw = function(ctx) {
         ctx.drawImage(this.txBody, 0, 0, 15, 20, this.position.x, this.position.y, 15, 20);
