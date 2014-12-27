@@ -9,7 +9,7 @@ var Player = function() {
     this.txBody.src = 'assets/textures/steve.png';
 
     this.draw = function(ctx) {
-        ctx.drawImage(this.txBody, 0, 0, 15, 20, this.position.x, this.position.y, 15, 20);
+        ctx.drawImage(this.txBody, 0, 0, 15, 20, Math.round(this.position.x), Math.round(this.position.y), 15, 20);
     };
 
     this.update = function() {
@@ -24,5 +24,23 @@ var Player = function() {
         this.position.x += this.velocity.x;
         this.position.y += this.velocity.y;
         this.velocity.y += Map.gravity;
+
+        var bounds = this.getRect();
+
+        if (bounds.bottom >= Renderer.canvas.height) {
+            this.velocity.y = 0;
+            this.position.y = Renderer.canvas.height - bounds.height;
+        }
+    };
+
+    this.getRect = function() {
+        return {
+            top: this.position.y,
+            left: this.position.x,
+            height: 20,
+            width: 15,
+            bottom: this.position.y + 20,
+            right: this.position.x + 15
+        };
     };
 };
