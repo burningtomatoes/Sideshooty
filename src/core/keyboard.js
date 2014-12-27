@@ -28,6 +28,7 @@ var Keyboard = {
         if (Keyboard.downNow.indexOf(kc) === -1) {
             console.log('[KB] Key pressed', kc);
             Keyboard.downNow.push(kc);
+            console.log(Keyboard.wasKeyPressed(kc));
         }
     },
 

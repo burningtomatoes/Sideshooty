@@ -82,10 +82,10 @@ var Renderer = {
      * This function is responsible for performing all calculations, before the frame is drawn.
      */
     update: function() {
-        // Update input
-        Keyboard.update();
         // Process the map and the entities on it
         Map.update();
+        // Update input
+        Keyboard.update();
     },
 
     /**

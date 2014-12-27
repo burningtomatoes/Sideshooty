@@ -3,7 +3,6 @@ var Player = function() {
     this.movementSpeed = 1;
 
     this.velocity = { x: 0, y: 0 };
-    this.velocity.y = (Math.random() * -10) - 5; // random velocity to test gravity
 
     this.txBody = new Image();
     this.txBody.src = 'assets/textures/steve.png';
@@ -21,13 +20,18 @@ var Player = function() {
             this.position.x += this.movementSpeed;
         }
 
+        if (Keyboard.wasKeyPressed(32)) {
+            console.log('jump');
+            this.velocity.y = (Math.random() * -10) - 5;
+        }
+
         this.position.x += this.velocity.x;
         this.position.y += this.velocity.y;
         this.velocity.y += Map.gravity;
 
         var bounds = this.getRect();
 
-        if (bounds.bottom >= Renderer.canvas.height) {
+        if (bounds.bottom > Renderer.canvas.height) {
             this.velocity.y = 0;
             this.position.y = Renderer.canvas.height - bounds.height;
         }
