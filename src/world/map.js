@@ -5,12 +5,19 @@ var Map = {
     height: 0,
     width: 0,
     entities: [],
+    gravity: 0,
 
     setData: function(data) {
         Map.name = data.title;
         Map.data = data.data;
         Map.height = data.height;
         Map.width = data.width;
+
+        if (data.gravity) {
+            Map.gravity = parseFloat(data.gravity);
+        } else {
+            Map.gravity = 0.5;
+        }
 
         var x = 0;
         var y = 0;
