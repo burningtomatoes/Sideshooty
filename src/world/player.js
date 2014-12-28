@@ -1,14 +1,11 @@
 var Player = function() {
     this.position = { x: 25, y: 155};
-
     this.movementSpeed = 1;
     this.jumpSpeed = 10;
     this.canJump = true;
-
+    this.canFire = true;
     this.facingEast = true;
-
     this.velocity = { x: 0, y: 0 };
-
     this.txBody = new Image();
     this.txBody.src = 'assets/textures/steve.png';
 
@@ -27,25 +24,41 @@ var Player = function() {
     };
 
     this.update = function() {
-        if (Keyboard.isKeyDown(KeyEvent.DOM_VK_LEFT)) {
+        /*** Input ***/
+        if (Keyboard.isKeyDown(KeyEvent.DOM_VK_LEFT) || Keyboard.isKeyDown(KeyEvent.DOM_VK_A)) {
             this.position.x -= this.movementSpeed;
             this.facingEast = false;
         }
 
-        if (Keyboard.isKeyDown(KeyEvent.DOM_VK_RIGHT)) {
+        if (Keyboard.isKeyDown(KeyEvent.DOM_VK_RIGHT) || Keyboard.isKeyDown(KeyEvent.DOM_VK_D)) {
             this.position.x += this.movementSpeed;
             this.facingEast = true;
         }
 
-        if (this.canJump && Keyboard.wasKeyPressed(32)) {
+        if (this.canJump && (Keyboard.wasKeyPressed(KeyEvent.DOM_VK_UP) || Keyboard.wasKeyPressed(KeyEvent.DOM_VK_W))) {
             this.velocity.y -= this.jumpSpeed;
             this.canJump = false;
         }
 
+        if (this.canFire && Keyboard.wasKeyPressed(KeyEvent.DOM_VK_SPACE)) {
+            var projectile = new Projectile();
+            projectile.position = {
+                x: this.position.x + (this.facingEast ? 5 : 15),
+                y: this.position.y
+            };
+            projectile.velocity = {
+                x: this.facingEast ? 10 : -10,
+                y: 0
+            };
+            Map.add(projectile);
+        }
+
+        /*** Movement processing **/
         this.position.x += this.velocity.x;
         this.position.y += this.velocity.y;
         this.velocity.y += Map.gravity;
 
+        /*** Collision detection **/
         var bounds = this.getRect();
 
         if (bounds.bottom > Renderer.canvas.height) {
