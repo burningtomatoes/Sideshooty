@@ -38,6 +38,8 @@ var Player = function() {
         if (this.canJump && (Keyboard.wasKeyPressed(KeyEvent.DOM_VK_UP) || Keyboard.wasKeyPressed(KeyEvent.DOM_VK_W))) {
             this.velocity.y -= this.jumpSpeed;
             this.canJump = false;
+
+            Sfx.jump();
         }
 
         if (this.canFire && Keyboard.wasKeyPressed(KeyEvent.DOM_VK_SPACE)) {
@@ -51,6 +53,8 @@ var Player = function() {
                 y: 0
             };
             Map.add(projectile);
+
+            Sfx.fire();
         }
 
         /*** Movement processing **/
