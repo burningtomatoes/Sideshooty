@@ -1,7 +1,10 @@
-var Projectile = function() {
+window.DEBUG_PROJECTILES = true;
+
+var Projectile = function(firedBy) {
     this.position = { x: 0, y: 0 };
     this.velocity = { x: 0, y: 0 };
     this.size = { w: 11, h: 7 };
+    this.firedBy = firedBy;
 
     this.txBody = new Image();
     this.txBody.src = 'assets/textures/bullet.png';
@@ -18,21 +21,58 @@ var Projectile = function() {
 
         ctx.drawImage(this.txBody, 0, 0, this.size.w, this.size.h, 0, 0, this.size.w / 2, this.size.h / 2);
         ctx.restore();
+
+        if (window.DEBUG_PROJECTILES) {
+            var sq = this.getRect();
+
+            ctx.beginPath();
+            ctx.rect(sq.left, sq.top, sq.width, sq.height);
+            ctx.lineWidth = 1;
+            ctx.strokeStyle = 'yellow';
+            ctx.stroke();
+        }
     };
 
     this.update = function() {
         this.position.x += this.velocity.x;
         this.position.y += this.velocity.y;
+
+        /*** Check collisions with entities ***/
+        var ourBox = this.getRect();
+
+        for (var i = 0; i < Map.entities.length; i++) {
+            var entity = Map.entities[i];
+
+            if (!entity.isVulnerable) {
+                // Probably a wall. Or a projectile. Or something.
+                continue;
+            }
+
+            if (entity === this.firedBy) {
+                // The entity that fired a projectile can never be harmed by itself.
+                // For now at least.
+                continue;
+            }
+
+            var boundingBox = entity.getRect();
+
+            if (Utils.rectIntersects(ourBox, boundingBox)) {
+                entity.hurt();
+
+                Map.remove(this);
+                return;
+            }
+        }
     };
 
     this.getRect = function() {
         return {
             top: this.position.y,
             left: this.position.x,
-            height: 20,
-            width: 15,
-            bottom: this.position.y + 20,
-            right: this.position.x + 15
+            height: this.size.h,
+            width: this.size.w,
+            bottom: this.position.y + this.size.h,
+            right: this.position.x + this.size.w
         };
     };
 };

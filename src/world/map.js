@@ -55,6 +55,17 @@ var Map = {
         Map.entities.push(entity);
     },
 
+    remove: function(entity) {
+        var index = Map.entities.indexOf(entity);
+
+        if (index >= 0) {
+            Map.entities.splice(index, 1);
+            return true;
+        }
+
+        return false;
+    },
+
     draw: function(ctx) {
         for (var i = 0; i < Map.entities.length; i++) {
             var entity = Map.entities[i];

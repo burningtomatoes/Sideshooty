@@ -15,8 +15,6 @@ var Enemy = Character.extend({
     },
 
     update: function() {
-        console.log(this.id + 1);
-
         if (this.facingEast) {
             this.position.x += this.movementSpeed;
         } else {

@@ -27,10 +27,10 @@ var Player = Character.extend({
         }
 
         if (this.canFire && Keyboard.wasKeyPressed(KeyEvent.DOM_VK_SPACE)) {
-            var projectile = new Projectile();
+            var projectile = new Projectile(this);
             projectile.position = {
                 x: this.position.x + (this.facingEast ? 5 : 15),
-                y: this.position.y
+                y: this.position.y + (this.size.h / 2) - 3
             };
             projectile.velocity = {
                 x: this.facingEast ? 10 : -10,

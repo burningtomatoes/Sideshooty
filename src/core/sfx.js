@@ -4,10 +4,11 @@ var Sfx = {
     preload: function() {
         Sfx.load('jump.wav');
         Sfx.load('shoot.wav');
+        Sfx.load('hit.wav');
     },
 
     load: function(soundId) {
-        console.log('[SFX] Loading sound effect', soundId);
+        console.info('[SFX] Loading sound effect', soundId);
 
         Sfx.sounds[soundId] = new Audio('assets/sfx/' + soundId);
     },
@@ -21,5 +22,6 @@ var Sfx = {
     },
 
     jump: function() { return Sfx.play('jump.wav'); },
-    fire: function() { return Sfx.play('shoot.wav'); }
+    fire: function() { return Sfx.play('shoot.wav'); },
+    hurt: function() { return Sfx.play('hit.wav'); }
 };

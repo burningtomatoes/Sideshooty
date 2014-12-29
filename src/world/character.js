@@ -10,6 +10,7 @@ var Character = Class.extend({
     velocity: { x: 0, y: 0 },
     size: { w: 15, h: 20 },
     txBody: new Image(),
+    isVulnerable: true,
 
     init: function() {
         this.movementSpeed = 1;
@@ -19,6 +20,7 @@ var Character = Class.extend({
         this.facingEast = true;
         this.velocity = { x: 0, y: 0 };
         this.size = { w: 15, h: 20 };
+        this.isVulnerable = true;
 
         this.txBody = new Image();
         this.txBody.src = 'assets/textures/enemy.png';
@@ -36,6 +38,26 @@ var Character = Class.extend({
 
         ctx.drawImage(this.txBody, 0, 0, this.size.w, this.size.h, 0, 0, this.size.w, this.size.h);
         ctx.restore();
+
+        if (window.DEBUG_PROJECTILES) {
+            var sq = this.getRect();
+
+            ctx.beginPath();
+            ctx.rect(sq.left, sq.top, sq.width, sq.height);
+            ctx.lineWidth = 1;
+            ctx.strokeStyle = 'red';
+            ctx.stroke();
+        }
+    },
+
+    hurt: function() {
+        if (!this.isVulnerable) {
+            return;
+        }
+
+        Sfx.hurt();
+
+        Map.remove(this);
     },
 
     update: function() {
