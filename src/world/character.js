@@ -1,15 +1,27 @@
+window.idgen = 0;
 var Character = Class.extend({
     position: { x: 25, y: 155},
+    id: (window.idgen++),
     movementSpeed: 1,
     jumpSpeed: 10,
     canJump: true,
     canFire: true,
     facingEast: true,
     velocity: { x: 0, y: 0 },
+    size: { w: 15, h: 20 },
     txBody: new Image(),
 
     init: function() {
-        this.txBody.src = 'assets/textures/steve.png';
+        this.movementSpeed = 1;
+        this.jumpSpeed = 10;
+        this.canJump = true;
+        this.canFire = true;
+        this.facingEast = true;
+        this.velocity = { x: 0, y: 0 };
+        this.size = { w: 15, h: 20 };
+
+        this.txBody = new Image();
+        this.txBody.src = 'assets/textures/enemy.png';
     },
 
     draw: function(ctx) {
@@ -22,7 +34,7 @@ var Character = Class.extend({
             ctx.translate(this.position.x, this.position.y);
         }
 
-        ctx.drawImage(this.txBody, 0, 0, 15, 20, 0, 0, 15, 20);
+        ctx.drawImage(this.txBody, 0, 0, this.size.w, this.size.h, 0, 0, this.size.w, this.size.h);
         ctx.restore();
     },
 
@@ -46,10 +58,10 @@ var Character = Class.extend({
         return {
             top: this.position.y,
             left: this.position.x,
-            height: 20,
-            width: 15,
-            bottom: this.position.y + 20,
-            right: this.position.x + 15
+            height: this.size.h,
+            width: this.size.w,
+            bottom: this.position.y + this.size.h,
+            right: this.position.x + this.size.w
         };
     }
 });

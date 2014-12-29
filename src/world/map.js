@@ -37,6 +37,10 @@ var Map = {
             x++;
         }
 
+        for (var i = 0; i < 10; i++) {
+            Map.add(new Enemy());
+        }
+
         Map.add(new Player());
     },
 

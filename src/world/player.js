@@ -1,4 +1,12 @@
 var Player = Character.extend({
+    position: { x: 25, y: 155},
+
+    init: function() {
+        this._super();
+        this.txBody.src = 'assets/textures/steve.png';
+        this.size = { w: 15, h: 20 };
+    },
+
     update: function() {
         /*** Input ***/
         if (Keyboard.isKeyDown(KeyEvent.DOM_VK_LEFT) || Keyboard.isKeyDown(KeyEvent.DOM_VK_A)) {
