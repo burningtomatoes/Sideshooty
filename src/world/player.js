@@ -9,6 +9,8 @@ var Player = Character.extend({
 
     txBlaster: null,
 
+    weaponBackfire: 0,
+
     init: function() {
         this._super();
 
@@ -52,7 +54,7 @@ var Player = Character.extend({
             y: this.lastPosition.y - this.position.y
         };
 
-        ctx.drawImage(this.txBlaster, 0, 0, this.size.w, this.size.h, offsetPos.x, offsetPos.y, this.size.w, this.size.h);
+        ctx.drawImage(this.txBlaster, 0, 0, this.size.w, this.size.h, offsetPos.x - this.weaponBackfire, offsetPos.y - this.weaponBackfire, this.size.w, this.size.h);
     },
 
     syncHud: function() {
@@ -85,6 +87,8 @@ var Player = Character.extend({
         this.syncHud();
 
         this.knockBack(1, this.facingEast);
+
+        this.weaponBackfire = this.facingEast ? 1 : -1;
     },
 
     hurt: function(source, damage) {
@@ -132,6 +136,12 @@ var Player = Character.extend({
         }
 
         var reloading = false;
+
+        if (this.weaponBackfire > 0) {
+            this.weaponBackfire--;
+        } else if (this.weaponBackfire < 0) {
+            this.weaponBackfire++;
+        }
 
         if (this.reloadTime > 0) {
             // Reloading, one frame at a time

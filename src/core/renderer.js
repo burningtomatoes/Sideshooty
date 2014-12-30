@@ -99,8 +99,11 @@ var Renderer = {
      * This function is responsible for drawing everything, based on the states set in the update function.
      */
     draw: function() {
-        // Clear the screen with a solid color
-        Renderer.context.fillStyle = "#086A87";
+        // Clear the screen with a changing gradient because we're cool like that
+        var grad = Renderer.context.createLinearGradient(0, 0, 0, Renderer.canvas.height);
+        grad.addColorStop(0, "#086A87");
+        grad.addColorStop(1, "#0431B4");
+        Renderer.context.fillStyle = grad;
         Renderer.context.fillRect(0, 0, Renderer.canvas.width, Renderer.canvas.height);
         // Render map entities on top
         Map.draw(Renderer.context);
