@@ -46,7 +46,14 @@ var Enemy = Character.extend({
         var ourBox = this.getRect();
 
         if (Utils.rectIntersects(theirBox, ourBox)) {
-            Map.player.hurt(this, 10);
+            // Is the player jumping on top of us?
+            var marginOfError = Map.player.velocity.y;
+            if (theirBox.bottom <= (ourBox.top + marginOfError)) {
+                this.hurt(Map.player, 33);
+                Map.player.jump();
+            } else {
+                Map.player.hurt(this, 10);
+            }
         }
 
         this._super();

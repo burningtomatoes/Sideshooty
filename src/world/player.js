@@ -99,10 +99,7 @@ var Player = Character.extend({
         }
 
         if (this.canJump && (Keyboard.wasKeyPressed(KeyEvent.DOM_VK_UP) || Keyboard.wasKeyPressed(KeyEvent.DOM_VK_W))) {
-            this.velocity.y -= this.jumpSpeed;
-            this.canJump = false;
-
-            Sfx.jump();
+            this.jump();
         }
 
         var reloading = false;

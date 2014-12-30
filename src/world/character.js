@@ -129,6 +129,15 @@ var Character = Class.extend({
         this.knockBack(1, projectile.velocity.x < 0);
     },
 
+    jump: function() {
+        this.velocity.y = -this.jumpSpeed;
+        this.canJump = false;
+
+        if (this === Map.player) {
+            Sfx.jump();
+        }
+    },
+
     die: function() {
         this.dead = true;
         this.healthNow = 0;
