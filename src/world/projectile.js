@@ -6,6 +6,7 @@ var Projectile = function(firedBy) {
     this.size = { w: 11, h: 7 };
     this.renderSize = { w: 6, h: 4 };
     this.firedBy = firedBy;
+    this.lifetime = 30;
 
     this.txBody = new Image();
     this.txBody.src = 'assets/textures/bullet.png';
@@ -63,6 +64,14 @@ var Projectile = function(firedBy) {
                 Map.remove(this);
                 return;
             }
+        }
+
+        /*** Lifetime management ***/
+        if (this.lifetime > 0) {
+            this.lifetime--;
+        } else {
+            Map.remove(this);
+            return;
         }
     };
 
