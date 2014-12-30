@@ -18,6 +18,7 @@ var Sfx = {
             Sfx.load(soundId);
         }
 
+        Sfx.sounds[soundId].load(); // need to call load() to fix Chrome issue where sound only plays once
         Sfx.sounds[soundId].play();
     },
 
