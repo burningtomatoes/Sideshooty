@@ -80,6 +80,10 @@ var Character = Class.extend({
         this.txBodyWhite = canvas;
     },
 
+    drawExtras: function(ctx) {
+        // To be implemented by children where appropriate
+    },
+
     draw: function(ctx) {
         if (this.dead) {
             ctx.drawImage(this.txCorpse, 0, 0, this.txCorpseSize.w, this.txCorpseSize.h, this.position.x, this.position.y - (this.txCorpseSize.h - this.size.h), this.txCorpseSize.w, this.txCorpseSize.h);
@@ -96,6 +100,9 @@ var Character = Class.extend({
         }
 
         ctx.drawImage(this.isHurting ? this.txBodyWhite : this.txBody, 0, 0, this.size.w, this.size.h, 0, 0, this.size.w, this.size.h);
+
+        this.drawExtras(ctx);
+
         ctx.restore();
 
         if (window.DEBUG_PROJECTILES && !this.dead) {

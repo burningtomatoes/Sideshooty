@@ -7,6 +7,8 @@ var Player = Character.extend({
     fireTimeout: 0,
     hurtTimeout: 0,
 
+    txBlaster: null,
+
     init: function() {
         this._super();
 
@@ -15,6 +17,9 @@ var Player = Character.extend({
         this.txCorpse = new Image();
         this.txCorpse.src = 'assets/textures/steve_dead.png';
         this.txCorpseSize = { w: 15, h: 20 };
+
+        this.txBlaster = new Image();
+        this.txBlaster.src = 'assets/textures/steve_blaster.png';
 
         this.size = { w: 15, h: 20 };
         this.ammoClipSize = 15;
@@ -37,6 +42,14 @@ var Player = Character.extend({
         this.syncHud();
     },
 
+    drawExtras: function(ctx) {
+        if (this.isHurting) {
+            return;
+        }
+
+        ctx.drawImage(this.txBlaster, 0, 0, this.size.w, this.size.h, 0, 0, this.size.w, this.size.h);
+    },
+
     syncHud: function() {
         var $ammoCount = $('#hud .ammo-count');
         $ammoCount.text(this.ammoInClip);
@@ -51,8 +64,8 @@ var Player = Character.extend({
     fire: function() {
         var projectile = new Projectile(this);
         projectile.position = {
-            x: this.position.x + (this.facingEast ? 5 : 15),
-            y: this.position.y + (this.size.h / 2) - 3
+            x: this.position.x + (this.facingEast ? 0 : 7),
+            y: this.position.y + (this.size.h / 2) - 1
         };
         projectile.velocity = {
             x: this.facingEast ? 10 : -10,
