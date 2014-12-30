@@ -12,6 +12,7 @@ var Character = Class.extend({
     txBody: new Image(),
     txBodyWhite: null,
     isVulnerable: true,
+    hitBoxMargin: 3,
 
     isHurting: false,
     hurtCounter: 0,
@@ -24,6 +25,7 @@ var Character = Class.extend({
         this.facingEast = true;
         this.velocity = { x: 0, y: 0 };
         this.size = { w: 15, h: 20 };
+        this.hitBoxMargin = 3;
 
         this.isVulnerable = true;
         this.isHurting = false;
@@ -129,11 +131,11 @@ var Character = Class.extend({
     getRect: function() {
         return {
             top: this.position.y,
-            left: this.position.x,
+            left: this.position.x + this.hitBoxMargin,
             height: this.size.h,
-            width: this.size.w,
+            width: this.size.w - (this.hitBoxMargin * 2),
             bottom: this.position.y + this.size.h,
-            right: this.position.x + this.size.w
+            right: this.position.x + this.size.w - (this.hitBoxMargin * 2)
         };
     }
 });
