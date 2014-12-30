@@ -96,12 +96,18 @@ var Player = Character.extend({
             this.fireTimeout--;
         }
 
-        if (!reloading && this.fireTimeout == 0 && this.canFire && Keyboard.isKeyDown(KeyEvent.DOM_VK_SPACE)) {
-            if (this.ammoInClip <= 0) {
-                this.reload();
-            } else {
-                this.fire();
-                this.fireTimeout = 6;
+        if (!reloading && this.fireTimeout == 0 && this.canFire) {
+            if (Keyboard.wasKeyPressed(KeyEvent.DOM_VK_R)) {
+                if (this.ammoInClip < this.ammoClipSize) {
+                    this.reload();
+                }
+            } else if (Keyboard.isKeyDown(KeyEvent.DOM_VK_SPACE)) {
+                if (this.ammoInClip <= 0) {
+                    this.reload();
+                } else {
+                    this.fire();
+                    this.fireTimeout = 6;
+                }
             }
         }
 
