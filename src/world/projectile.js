@@ -1,4 +1,4 @@
-window.DEBUG_PROJECTILES = true;
+window.DEBUG_PROJECTILES = false;
 
 var Projectile = function(firedBy) {
     this.position = { x: 0, y: 0 };
@@ -10,6 +10,8 @@ var Projectile = function(firedBy) {
 
     this.txBody = new Image();
     this.txBody.src = 'assets/textures/bullet.png';
+
+    this.configured = false;
 
     this.draw = function(ctx) {
         ctx.save();
@@ -36,6 +38,12 @@ var Projectile = function(firedBy) {
     };
 
     this.update = function() {
+        if (!this.configured) {
+            this.velocity.x += Math.random() - 0.5;
+            this.velocity.y += Math.random() - 0.5;
+            this.configured = true;
+        }
+
         this.position.x += this.velocity.x;
         this.position.y += this.velocity.y;
 
