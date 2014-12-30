@@ -67,7 +67,7 @@ var Projectile = function(firedBy) {
             var boundingBox = entity.getRect();
 
             if (Utils.rectIntersects(ourBox, boundingBox)) {
-                entity.hurt();
+                entity.hurt(this);
 
                 Map.remove(this);
                 return;

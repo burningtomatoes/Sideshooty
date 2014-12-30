@@ -90,7 +90,7 @@ var Character = Class.extend({
         }
     },
 
-    hurt: function() {
+    hurt: function(projectile) {
         if (!this.isVulnerable) {
             return;
         }
@@ -100,13 +100,40 @@ var Character = Class.extend({
         this.isHurting = true;
         this.hurtCounter = 2;
         //Map.remove(this);
+
+        this.knockBack(1, projectile.velocity.x < 0);
+    },
+
+    knockBack: function(knockbackVelocity, toEast) {
+        if (toEast) {
+            knockbackVelocity = -knockbackVelocity;
+        }
+
+        this.velocity.x += knockbackVelocity;
     },
 
     update: function() {
         /*** Movement processing ***/
         this.position.x += this.velocity.x;
         this.position.y += this.velocity.y;
+
+        // Downward gravity
         this.velocity.y += Map.gravity;
+
+        // Sideways gravity (for knockbacks etc)
+        if (this.velocity.x > 0) {
+            this.velocity.x -= Map.gravity / 2;
+
+            if (this.velocity.x < 0) {
+                this.velocity.x = 0;
+            }
+        } else if (this.velocity.x < 0) {
+            this.velocity.x += Map.gravity / 2;
+
+            if (this.velocity.x > 0) {
+                this.velocity.x = 0;
+            }
+        }
 
         /*** Collision detection ***/
         var bounds = this.getRect();

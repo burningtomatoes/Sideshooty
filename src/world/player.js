@@ -58,13 +58,7 @@ var Player = Character.extend({
 
         this.syncHud();
 
-        var knockbackVelocity = 1;
-
-        if (this.facingEast) {
-            knockbackVelocity = -knockbackVelocity;
-        }
-
-        this.velocity.x += knockbackVelocity;
+        this.knockBack(1, this.facingEast);
     },
 
     update: function() {
