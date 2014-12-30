@@ -4,6 +4,7 @@ var Projectile = function(firedBy) {
     this.position = { x: 0, y: 0 };
     this.velocity = { x: 0, y: 0 };
     this.size = { w: 11, h: 7 };
+    this.renderSize = { w: 6, h: 4 };
     this.firedBy = firedBy;
 
     this.txBody = new Image();
@@ -13,13 +14,13 @@ var Projectile = function(firedBy) {
         ctx.save();
 
         if (this.velocity.x < 0) {
-            ctx.translate(this.position.x + this.size.w, this.position.y);
+            ctx.translate(this.position.x + this.renderSize.w, this.position.y);
             ctx.scale(-1, 1);
         } else {
             ctx.translate(this.position.x, this.position.y);
         }
 
-        ctx.drawImage(this.txBody, 0, 0, this.size.w, this.size.h, 0, 0, this.size.w / 2, this.size.h / 2);
+        ctx.drawImage(this.txBody, 0, 0, this.size.w, this.size.h, 0, 0, this.renderSize.w, this.renderSize.h);
         ctx.restore();
 
         if (window.DEBUG_PROJECTILES) {
@@ -69,10 +70,10 @@ var Projectile = function(firedBy) {
         return {
             top: this.position.y,
             left: this.position.x,
-            height: this.size.h,
-            width: this.size.w,
-            bottom: this.position.y + this.size.h,
-            right: this.position.x + this.size.w
+            height: this.renderSize.h,
+            width: this.renderSize.w,
+            bottom: this.position.y + this.renderSize.h,
+            right: this.position.x + this.renderSize.w
         };
     };
 };
