@@ -1,19 +1,27 @@
 var Character = Class.extend({
     position: { x: 25, y: 155},
+    velocity: { x: 0, y: 0 },
+    facingEast: true,
+
     movementSpeed: 1,
     jumpSpeed: 10,
+
     canJump: true,
     canFire: true,
-    facingEast: true,
-    velocity: { x: 0, y: 0 },
+
     size: { w: 15, h: 20 },
     txBody: new Image(),
     txBodyWhite: null,
+    txCorpse: null,
+    txCorpseSize: { w: 25, h: 9 },
+
     isVulnerable: true,
     hitBoxMargin: 3,
-
     isHurting: false,
     hurtCounter: 0,
+    healthNow: 0,
+    healthMax: 100,
+    dead: false,
 
     init: function() {
         this.movementSpeed = 1;
@@ -28,11 +36,17 @@ var Character = Class.extend({
         this.isVulnerable = true;
         this.isHurting = false;
         this.hurtCounter = 0;
+        this.healthMax = 100;
+        this.healthNow = this.healthMax;
+        this.dead = false;
 
         this.txBody = new Image();
         this.txBody.onload = this.generateHurtSprite.bind(this);
 
         this.txBodyWhite = this.txBody; // avoid breakage, generateHurtSprite() will update this later
+
+        this.txCorpse = new Image();
+        this.txCorpse.src = 'assets/textures/enemy_dead.png';
     },
 
     generateHurtSprite: function() {
@@ -67,6 +81,11 @@ var Character = Class.extend({
     },
 
     draw: function(ctx) {
+        if (this.dead) {
+            ctx.drawImage(this.txCorpse, 0, 0, this.txCorpseSize.w, this.txCorpseSize.h, this.position.x, this.position.y - (this.txCorpseSize.h - this.size.h), this.txCorpseSize.w, this.txCorpseSize.h);
+            return;
+        }
+
         ctx.save();
 
         if (!this.facingEast) {
@@ -79,7 +98,7 @@ var Character = Class.extend({
         ctx.drawImage(this.isHurting ? this.txBodyWhite : this.txBody, 0, 0, this.size.w, this.size.h, 0, 0, this.size.w, this.size.h);
         ctx.restore();
 
-        if (window.DEBUG_PROJECTILES) {
+        if (window.DEBUG_PROJECTILES && !this.dead) {
             var sq = this.getRect();
 
             ctx.beginPath();
@@ -90,16 +109,23 @@ var Character = Class.extend({
         }
     },
 
-    hurt: function(projectile) {
-        if (!this.isVulnerable) {
+    hurt: function(projectile, damage) {
+        if (!this.isVulnerable || this.dead) {
             return;
         }
 
-        Sfx.hurt();
-           
-        this.isHurting = true;
-        this.hurtCounter = 2;
-        //Map.remove(this);
+        if (damage > 0) {
+            Sfx.hurt();
+
+            this.isHurting = true;
+            this.hurtCounter = 2;
+            this.healthNow -= damage;
+
+            if (this.healthNow <= 0) {
+                this.dead = true;
+                this.healthNow = 0;
+            }
+        }
 
         this.knockBack(1, projectile.velocity.x < 0);
     },
@@ -109,7 +135,7 @@ var Character = Class.extend({
             knockbackVelocity = -knockbackVelocity;
         }
 
-        this.velocity.x += knockbackVelocity;
+        this.velocity.x = knockbackVelocity;
     },
 
     update: function() {

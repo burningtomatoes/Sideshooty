@@ -15,6 +15,12 @@ var Enemy = Character.extend({
     },
 
     update: function() {
+        if (this.dead) {
+            this._super();
+            return;
+        }
+
+        /*** Move from side to side until we can no more ***/
         if (this.facingEast) {
             this.position.x += this.movementSpeed;
         } else {
@@ -27,6 +33,14 @@ var Enemy = Character.extend({
 
         if (this.position.x >= Renderer.canvas.width && this.facingEast) {
             this.facingEast = false;
+        }
+
+        /*** Collision with player ***/
+        var theirBox = Map.player.getRect();
+        var ourBox = this.getRect();
+
+        if (Utils.rectIntersects(theirBox, ourBox)) {
+            Map.player.hurt(this, 10);
         }
 
         this._super();

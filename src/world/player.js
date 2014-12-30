@@ -5,6 +5,7 @@ var Player = Character.extend({
     ammoClipSize: 0,
     reloadTime: 0,
     fireTimeout: 0,
+    hurtTimeout: 0,
 
     init: function() {
         this._super();
@@ -12,6 +13,7 @@ var Player = Character.extend({
         this.size = { w: 15, h: 20 };
         this.ammoClipSize = 15;
         this.ammoInClip = this.ammoClipSize;
+        this.hurtTimeout = 0;
 
         this.syncHud();
     },
@@ -61,7 +63,22 @@ var Player = Character.extend({
         this.knockBack(1, this.facingEast);
     },
 
+    hurt: function(source, damage) {
+        if (this.hurtTimeout > 0) {
+            damage = 0;
+        }
+
+        this.hurtTimeout = 5;
+
+        this._super(source, damage);
+    },
+
     update: function() {
+        if (this.dead) {
+            this._super();
+            return;
+        }
+
         /*** Input ***/
         if (Keyboard.isKeyDown(KeyEvent.DOM_VK_LEFT) || Keyboard.isKeyDown(KeyEvent.DOM_VK_A)) {
             this.position.x -= this.movementSpeed;
@@ -109,6 +126,10 @@ var Player = Character.extend({
                     this.fireTimeout = 6;
                 }
             }
+        }
+
+        if (this.hurtTimeout > 0) {
+            this.hurtTimeout--;
         }
 
         this._super();

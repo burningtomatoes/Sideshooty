@@ -6,6 +6,7 @@ var Map = {
     width: 0,
     entities: [],
     gravity: 0,
+    player: null,
 
     setData: function(data) {
         Map.name = data.title;
@@ -41,7 +42,8 @@ var Map = {
             Map.add(new Enemy());
         }
 
-        Map.add(new Player());
+        Map.player = new Player();
+        Map.add(Map.player);
     },
 
     clear: function() {

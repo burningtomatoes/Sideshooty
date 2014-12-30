@@ -53,8 +53,8 @@ var Projectile = function(firedBy) {
         for (var i = 0; i < Map.entities.length; i++) {
             var entity = Map.entities[i];
 
-            if (!entity.isVulnerable) {
-                // Probably a wall. Or a projectile. Or something.
+            if (!entity.isVulnerable || entity.dead) {
+                // Probably a wall. Or a projectile. Or a corpse. Or something.
                 continue;
             }
 
@@ -67,7 +67,7 @@ var Projectile = function(firedBy) {
             var boundingBox = entity.getRect();
 
             if (Utils.rectIntersects(ourBox, boundingBox)) {
-                entity.hurt(this);
+                entity.hurt(this, 25);
 
                 Map.remove(this);
                 return;
