@@ -47,7 +47,12 @@ var Player = Character.extend({
             return;
         }
 
-        ctx.drawImage(this.txBlaster, 0, 0, this.size.w, this.size.h, 0, 0, this.size.w, this.size.h);
+        var offsetPos = {
+            x: this.lastPosition.x - this.position.x,
+            y: this.lastPosition.y - this.position.y
+        };
+
+        ctx.drawImage(this.txBlaster, 0, 0, this.size.w, this.size.h, offsetPos.x, offsetPos.y, this.size.w, this.size.h);
     },
 
     syncHud: function() {

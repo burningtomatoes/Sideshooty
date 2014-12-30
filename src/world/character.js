@@ -1,5 +1,6 @@
 var Character = Class.extend({
     position: { x: 25, y: 155},
+    lastPosition: { x: 0, y: 0 },
     velocity: { x: 0, y: 0 },
     facingEast: true,
 
@@ -161,6 +162,8 @@ var Character = Class.extend({
     },
 
     update: function() {
+        this.lastPosition = { x: this.position.x, y: this.position.y };
+
         /*** Movement processing ***/
         this.position.x += this.velocity.x;
         this.position.y += this.velocity.y;
