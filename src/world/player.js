@@ -57,6 +57,14 @@ var Player = Character.extend({
         Sfx.fire();
 
         this.syncHud();
+
+        var knockbackVelocity = 1;
+
+        if (this.facingEast) {
+            knockbackVelocity = -knockbackVelocity;
+        }
+
+        this.velocity.x += knockbackVelocity;
     },
 
     update: function() {
