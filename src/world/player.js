@@ -9,7 +9,13 @@ var Player = Character.extend({
 
     init: function() {
         this._super();
+
         this.txBody.src = 'assets/textures/steve.png';
+
+        this.txCorpse = new Image();
+        this.txCorpse.src = 'assets/textures/steve_dead.png';
+        this.txCorpseSize = { w: 15, h: 20 };
+
         this.size = { w: 15, h: 20 };
         this.ammoClipSize = 15;
         this.ammoInClip = this.ammoClipSize;
@@ -68,7 +74,9 @@ var Player = Character.extend({
             damage = 0;
         }
 
-        this.hurtTimeout = 5;
+        if (damage > 0) {
+            this.hurtTimeout = 10;
+        }
 
         this._super(source, damage);
     },
