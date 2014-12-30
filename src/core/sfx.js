@@ -6,6 +6,7 @@ var Sfx = {
         Sfx.load('shoot.wav');
         Sfx.load('hit.wav');
         Sfx.load('reload.wav');
+        Sfx.load('death_groan.wav');
     },
 
     load: function(soundId) {

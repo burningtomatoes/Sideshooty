@@ -14,6 +14,12 @@ var Enemy = Character.extend({
         this.position.y = Math.round(Math.random() * 10 * (2 + Math.random()));
     },
 
+    die: function() {
+        this._super();
+
+        Sfx.play('death_groan.wav');
+    },
+
     update: function() {
         if (this.dead) {
             this._super();

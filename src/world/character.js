@@ -122,12 +122,16 @@ var Character = Class.extend({
             this.healthNow -= damage;
 
             if (this.healthNow <= 0) {
-                this.dead = true;
-                this.healthNow = 0;
+                this.die();
             }
         }
 
         this.knockBack(1, projectile.velocity.x < 0);
+    },
+
+    die: function() {
+        this.dead = true;
+        this.healthNow = 0;
     },
 
     knockBack: function(knockbackVelocity, toEast) {
