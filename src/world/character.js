@@ -94,10 +94,10 @@ var Character = Class.extend({
         ctx.save();
 
         if (!this.facingEast) {
-            ctx.translate(this.position.x + 16, this.position.y);
+            ctx.translate(Math.round(this.position.x + 16), Math.round(this.position.y));
             ctx.scale(-1, 1);
         } else {
-            ctx.translate(this.position.x, this.position.y);
+            ctx.translate(Math.round(this.position.x), Math.round(this.position.y));
         }
 
         ctx.drawImage(this.isHurting ? this.txBodyWhite : this.txBody, 0, 0, this.size.w, this.size.h, 0, 0, this.size.w, this.size.h);
