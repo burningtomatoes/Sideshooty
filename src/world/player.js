@@ -81,8 +81,19 @@ var Player = Character.extend({
         this._super(source, damage);
     },
 
+    die: function() {
+        this._super();
+
+        $('#ded').show();
+    },
+
     update: function() {
         if (this.dead) {
+            if (Keyboard.wasKeyPressed(KeyEvent.DOM_VK_SPACE)) {
+                // Restart game
+                Renderer.loadMap(Map.id);
+            }
+
             this._super();
             return;
         }

@@ -1,4 +1,5 @@
 var Map = {
+    id: null,
     loaded: false,
     name: null,
     data: null,

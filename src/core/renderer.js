@@ -54,6 +54,9 @@ var Renderer = {
 
         var doDownload = function() {
             Map.clear();
+            Map.id = mapId;
+
+            $('#ded').hide();
 
             $.get('assets/maps/' + mapId + '.json')
                 .success(function(data) {
