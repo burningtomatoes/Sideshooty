@@ -59,7 +59,9 @@ var Renderer = {
                 .success(function(data) {
                     Map.setData(data);
                     console.info('[Maps] Successfully loaded map from file, fading in...');
-                    Renderer.$canvas.fadeIn();
+                    Renderer.$canvas.fadeIn(function() {
+                        $('#hud').show();
+                    });
                     callback(true);
                 })
                 .error(function() {
@@ -72,6 +74,7 @@ var Renderer = {
         // If it is not visible (e.g. the game is starting, begin download immediately).
         if (Renderer.$canvas.is(':visible')) {
             Renderer.$canvas.fadeOut('slow', doDownload);
+            $('#hud').hide();
         } else {
             doDownload();
         }

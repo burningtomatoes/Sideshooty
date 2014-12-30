@@ -5,6 +5,7 @@ var Sfx = {
         Sfx.load('jump.wav');
         Sfx.load('shoot.wav');
         Sfx.load('hit.wav');
+        Sfx.load('reload.wav');
     },
 
     load: function(soundId) {
@@ -24,5 +25,6 @@ var Sfx = {
 
     jump: function() { return Sfx.play('jump.wav'); },
     fire: function() { return Sfx.play('shoot.wav'); },
-    hurt: function() { return Sfx.play('hit.wav'); }
+    hurt: function() { return Sfx.play('hit.wav'); },
+    reload: function() { return Sfx.play('reload.wav'); }
 };

@@ -46,6 +46,20 @@ body {
     border-bottom: 1px solid #add8e6;
 }
 
+#hud {
+    position: fixed;
+    top: 10px;
+    left: 15px;
+    z-index: 999999;
+    display: none;
+    pointer-events: none;
+    background: none !important;
+    font-size: 20px;
+}
+#hud .reloading {
+    color: yellow;
+}
+
 canvas {
     /** We want nearest neighbor stretching (pixelated) **/
     image-rendering: optimizeSpeed;

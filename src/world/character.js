@@ -1,7 +1,5 @@
-window.idgen = 0;
 var Character = Class.extend({
     position: { x: 25, y: 155},
-    id: (window.idgen++),
     movementSpeed: 1,
     jumpSpeed: 10,
     canJump: true,
