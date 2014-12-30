@@ -144,6 +144,8 @@ var Character = Class.extend({
     },
 
     knockBack: function(knockbackVelocity, toEast) {
+        knockbackVelocity += Math.random();
+
         if (toEast) {
             knockbackVelocity = -knockbackVelocity;
         }
