@@ -5,7 +5,8 @@ var Block = function(x, y) {
     this.txBody.src = 'assets/textures/brickwall.png';
 
     this.draw = function(ctx) {
-        ctx.drawImage(this.txBody, 0, 0, 16, 16, this.position.x, this.position.y, 16, 16);
+        ctx.drawImage(this.txBody, 0, 0, 16, 16, Camera.translateX(this.position.x),
+            Camera.translateY(this.position.y), 16, 16);
     };
 
     this.update = function() {

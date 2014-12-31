@@ -87,17 +87,17 @@ var Character = Class.extend({
 
     draw: function(ctx) {
         if (this.dead) {
-            ctx.drawImage(this.txCorpse, 0, 0, this.txCorpseSize.w, this.txCorpseSize.h, this.position.x, this.position.y - (this.txCorpseSize.h - this.size.h), this.txCorpseSize.w, this.txCorpseSize.h);
+            ctx.drawImage(this.txCorpse, 0, 0, this.txCorpseSize.w, this.txCorpseSize.h, Camera.translateX(this.position.x), Camera.translateY(this.position.y - (this.txCorpseSize.h - this.size.h)), this.txCorpseSize.w, this.txCorpseSize.h);
             return;
         }
 
         ctx.save();
 
         if (!this.facingEast) {
-            ctx.translate(Math.round(this.position.x + 16), Math.round(this.position.y));
+            ctx.translate(Math.round(Camera.translateX(this.position.x + 16)), Math.round(Camera.translateY(this.position.y)));
             ctx.scale(-1, 1);
         } else {
-            ctx.translate(Math.round(this.position.x), Math.round(this.position.y));
+            ctx.translate(Math.round(Camera.translateX(this.position.x)), Math.round(Camera.translateY(this.position.y)));
         }
 
         ctx.drawImage(this.isHurting ? this.txBodyWhite : this.txBody, 0, 0, this.size.w, this.size.h, 0, 0, this.size.w, this.size.h);
@@ -110,7 +110,7 @@ var Character = Class.extend({
             var sq = this.getRect();
 
             ctx.beginPath();
-            ctx.rect(sq.left, sq.top, sq.width, sq.height);
+            ctx.rect(Camera.translateX(sq.left), Camera.translateY(sq.top), sq.width, sq.height);
             ctx.lineWidth = 1;
             ctx.strokeStyle = 'red';
             ctx.stroke();

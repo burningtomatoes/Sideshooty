@@ -89,6 +89,8 @@ var Player = Character.extend({
         this.knockBack(1, this.facingEast);
 
         this.weaponBackfire = this.facingEast ? 1 : -1;
+
+        Camera.rumble(5, 2);
     },
 
     hurt: function(source, damage) {
@@ -98,6 +100,7 @@ var Player = Character.extend({
 
         if (damage > 0) {
             this.hurtTimeout = 10;
+            Camera.rumble(5, 3);
         }
 
         this._super(source, damage);

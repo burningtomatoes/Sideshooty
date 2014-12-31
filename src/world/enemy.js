@@ -49,6 +49,7 @@ var Enemy = Character.extend({
             // Is the player jumping on top of us?
             var marginOfError = Map.player.velocity.y;
             if (theirBox.bottom <= (ourBox.top + marginOfError)) {
+                Camera.rumble(5, 2);
                 this.hurt(Map.player, 33);
                 Map.player.jump();
             } else {

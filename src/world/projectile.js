@@ -17,10 +17,10 @@ var Projectile = function(firedBy) {
         ctx.save();
 
         if (this.velocity.x < 0) {
-            ctx.translate(this.position.x + this.renderSize.w, this.position.y);
+            ctx.translate(Camera.translateX(this.position.x + this.renderSize.w), Camera.translateY(this.position.y));
             ctx.scale(-1, 1);
         } else {
-            ctx.translate(this.position.x, this.position.y);
+            ctx.translate(Camera.translateX(this.position.x), Camera.translateY(this.position.y));
         }
 
         ctx.drawImage(this.txBody, 0, 0, this.size.w, this.size.h, 0, 0, this.renderSize.w, this.renderSize.h);
@@ -30,7 +30,7 @@ var Projectile = function(firedBy) {
             var sq = this.getRect();
 
             ctx.beginPath();
-            ctx.rect(sq.left, sq.top, sq.width, sq.height);
+            ctx.rect(Camera.translateX(sq.left), Camera.translateY(sq.top), sq.width, sq.height);
             ctx.lineWidth = 1;
             ctx.strokeStyle = 'yellow';
             ctx.stroke();
