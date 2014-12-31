@@ -12,11 +12,11 @@ var Camera = {
     trackingEntity: null,
 
     translateX: function(x) {
-        return x + Camera.smoothedX + Camera.rumbleOffset;
+        return Math.round(x + Camera.smoothedX + Camera.rumbleOffset);
     },
 
     translateY: function(y) {
-        return y + Camera.smoothedY + Camera.rumbleOffset;
+        return Math.round(y + Camera.smoothedY + Camera.rumbleOffset);
     },
 
     translateObject: function(obj) {
@@ -50,8 +50,8 @@ var Camera = {
         }
 
         if (this.trackingEntity != null) {
-            Camera.x = -Math.round(this.trackingEntity.position.x - (Renderer.canvas.width / 2));
-            Camera.y = -Math.round(this.trackingEntity.position.y - (Renderer.canvas.height / 2));
+            Camera.x = -(this.trackingEntity.position.x - (Renderer.canvas.width / 2));
+            Camera.y = -(this.trackingEntity.position.y - (Renderer.canvas.height / 2));
         }
 
         Camera.smoothedX = MathHelper.lerp(Camera.smoothedX, Camera.x, 0.1);
