@@ -1,44 +1,60 @@
 var Camera = {
     x: 0,
     y: 0,
+    smoothedX: 0,
+    smoothedY: 0,
 
     isRumbling: false,
     rumbleOffset: 0,
     rumbleIntensity: 1,
     rumbleDuration: 0,
 
+    trackingEntity: null,
+
     translateX: function(x) {
-        return x + this.x + this.rumbleOffset;
+        return x + Camera.smoothedX + Camera.rumbleOffset;
     },
 
     translateY: function(y) {
-        return y + this.y + this.rumbleOffset;
+        return y + Camera.smoothedY + Camera.rumbleOffset;
     },
 
     translateObject: function(obj) {
         return {
-            x: this.translateX(obj.x),
-            y: this.translateY(obj.y)
+            x: Camera.translateX(obj.x),
+            y: Camera.translateY(obj.y)
         };
     },
 
     rumble: function(duration, intensity) {
-        this.isRumbling = true;
-        this.rumbleOffset = 0;
-        this.rumbleDuration = duration;
-        this.rumbleIntensity = intensity;
+        Camera.isRumbling = true;
+        Camera.rumbleOffset = 0;
+        Camera.rumbleDuration = duration;
+        Camera.rumbleIntensity = intensity;
+    },
+
+    track: function(entity) {
+        this.trackingEntity = entity;
     },
 
     update: function() {
-        if (this.isRumbling) {
-            this.rumbleDuration--;
+        if (Camera.isRumbling) {
+            Camera.rumbleDuration--;
 
-            this.rumbleOffset = Math.floor((Math.random() * this.rumbleIntensity) + 1) - this.rumbleIntensity;
+            Camera.rumbleOffset = Math.floor((Math.random() * Camera.rumbleIntensity) + 1) - Camera.rumbleIntensity;
 
-            if (this.rumbleDuration <= 0) {
-                this.isRumbling = false;
-                this.rumbleOffset = 0;
+            if (Camera.rumbleDuration <= 0) {
+                Camera.isRumbling = false;
+                Camera.rumbleOffset = 0;
             }
         }
+
+        if (this.trackingEntity != null) {
+            Camera.x = -Math.round(this.trackingEntity.position.x - (Renderer.canvas.width / 2));
+            Camera.y = -Math.round(this.trackingEntity.position.y - (Renderer.canvas.height / 2));
+        }
+
+        Camera.smoothedX = MathHelper.lerp(Camera.smoothedX, Camera.x, 0.1);
+        Camera.smoothedY = MathHelper.lerp(Camera.smoothedY, Camera.y, 0.1);
     }
 };

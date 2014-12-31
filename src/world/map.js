@@ -45,6 +45,8 @@ var Map = {
 
         Map.player = new Player();
         Map.add(Map.player);
+
+        Camera.track(Map.player);
     },
 
     clear: function() {
