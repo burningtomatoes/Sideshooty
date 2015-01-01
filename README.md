@@ -7,6 +7,14 @@ I developed this game as part of my "build one HTML5 game a week" challenge. I b
 
 If you're interested in learning more about this, visit <http://www.burningtomato.com>. I publish all the games I build on that website. You can also follow me on Twitter at <https://twitter.com/burningtomato>.
 
+A confession
+---
+Full disclosure: I spent about two weeks on this game. I got a bit excited and started during the holidays, but as I should have anticipated, didn't have nearly enough time to get anything done. Ssh, don't tell anyone!
+
+An added bonus is that I intend to re-use some of the code I have created here, for all intents and purposes I see part of the time spent on this game as creating a "base" for future games.
+
+Or maybe these are just excuses, we'll soon find out whether I can pull it off or not. :-)
+
 About the game
 ---
 This game is a side-scrolling shooter. You have to shoot the enemies. They're bad people and you're very cross with them because they stole your wife and ruined Christmas.
