@@ -1,4 +1,4 @@
-window.DEBUG_PROJECTILES = false;
+window.DEBUG_PROJECTILES = true;
 
 var Projectile = function(firedBy) {
     this.position = { x: 0, y: 0 };
@@ -53,24 +53,33 @@ var Projectile = function(firedBy) {
         for (var i = 0; i < Map.entities.length; i++) {
             var entity = Map.entities[i];
 
-            if (!entity.isVulnerable || entity.dead) {
-                // Probably a wall. Or a projectile. Or a corpse. Or something.
-                continue;
-            }
-
             if (entity === this.firedBy) {
                 // The entity that fired a projectile can never be harmed by itself.
                 // For now at least.
                 continue;
             }
 
-            var boundingBox = entity.getRect();
+            if (entity.isBlock) {
+                var boundingBox = entity.getRect();
 
-            if (Utils.rectIntersects(ourBox, boundingBox)) {
-                entity.hurt(this, 25);
+                if (Utils.rectIntersects(ourBox, boundingBox)) {
+                    Map.remove(this);
+                    return;
+                }
+            } else {
+                if (!entity.isVulnerable || entity.dead) {
+                    // Probably a projectile. Or a corpse. Or something.
+                    continue;
+                }
 
-                Map.remove(this);
-                return;
+                var boundingBox = entity.getRect();
+
+                if (Utils.rectIntersects(ourBox, boundingBox)) {
+                    entity.hurt(this, 25);
+
+                    Map.remove(this);
+                    return;
+                }
             }
         }
 
