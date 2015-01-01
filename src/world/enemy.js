@@ -11,7 +11,7 @@ var Enemy = Character.extend({
 
         this.position = { x: 0, y: 0 };
         this.position.x = Math.round(Math.random() * 10 * (20 + Math.random()));
-        this.position.y = Math.round(Math.random() * 10 * (2 + Math.random()));
+        this.position.y = Math.round(Math.random() * 10 * (16 + Math.random()));
     },
 
     die: function() {
