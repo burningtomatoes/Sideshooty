@@ -10,6 +10,7 @@ var Player = Character.extend({
     txBlaster: null,
 
     weaponBackfire: 0,
+    isFiring: false,
 
     init: function() {
         this._super();
@@ -27,6 +28,7 @@ var Player = Character.extend({
         this.ammoClipSize = 15;
         this.ammoInClip = this.ammoClipSize;
         this.hurtTimeout = 0;
+        this.isFiring = false;
 
         this.syncHud();
     },
@@ -91,6 +93,8 @@ var Player = Character.extend({
         this.weaponBackfire = this.facingEast ? 1 : -1;
 
         Camera.rumble(5, 2);
+
+        this.isFiring = true;
     },
 
     hurt: function(source, damage) {
@@ -125,13 +129,17 @@ var Player = Character.extend({
 
         /*** Input ***/
         if ((Keyboard.isKeyDown(KeyEvent.DOM_VK_LEFT) || Keyboard.isKeyDown(KeyEvent.DOM_VK_A)) && this.canMoveLeft) {
+            if (!this.isFiring) {
+                this.facingEast = false;
+            }
             this.position.x -= this.movementSpeed;
-            this.facingEast = false;
         }
 
         if ((Keyboard.isKeyDown(KeyEvent.DOM_VK_RIGHT) || Keyboard.isKeyDown(KeyEvent.DOM_VK_D)) && this.canMoveRight) {
+            if (!this.isFiring) {
+                this.facingEast = true;
+            }
             this.position.x += this.movementSpeed;
-            this.facingEast = true;
         }
 
         if (this.canJump && (Keyboard.wasKeyPressed(KeyEvent.DOM_VK_UP) || Keyboard.wasKeyPressed(KeyEvent.DOM_VK_W))) {
@@ -160,12 +168,14 @@ var Player = Character.extend({
             this.fireTimeout--;
         }
 
+        var holdingFireButton = Keyboard.isKeyDown(KeyEvent.DOM_VK_SPACE);
+
         if (!reloading && this.fireTimeout == 0 && this.canFire) {
             if (Keyboard.wasKeyPressed(KeyEvent.DOM_VK_R)) {
                 if (this.ammoInClip < this.ammoClipSize) {
                     this.reload();
                 }
-            } else if (Keyboard.isKeyDown(KeyEvent.DOM_VK_SPACE)) {
+            } else if (holdingFireButton) {
                 if (this.ammoInClip <= 0) {
                     this.reload();
                 } else {
@@ -174,6 +184,8 @@ var Player = Character.extend({
                 }
             }
         }
+
+        this.isFiring = !!holdingFireButton;
 
         if (this.hurtTimeout > 0) {
             this.hurtTimeout--;
