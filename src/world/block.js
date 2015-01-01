@@ -6,6 +6,7 @@ var Block = function(x, y) {
     this.renderSize = { w: 16, h: 16 };
 
     this.isBlock = true;
+    this.collisionStatus = 'none';
 
     this.draw = function(ctx) {
         ctx.drawImage(this.txBody, 0, 0, this.renderSize.w, this.renderSize.h, Camera.translateX(this.position.x),
@@ -17,7 +18,17 @@ var Block = function(x, y) {
             ctx.beginPath();
             ctx.rect(Camera.translateX(sq.left), Camera.translateY(sq.top), sq.width, sq.height);
             ctx.lineWidth = 1;
-            ctx.strokeStyle = 'red';
+
+            if (this.collisionStatus == 'none') {
+                ctx.strokeStyle = 'green';
+            } else if (this.collisionStatus == 'intersects') {
+                ctx.strokeStyle = 'blue';
+            } else if (this.collisionStatus == 'blocks') {
+                ctx.strokeStyle = 'red';
+            } else {
+                ctx.strokeStyle = 'brown';
+            }
+
             ctx.stroke();
         }
     };

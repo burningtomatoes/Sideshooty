@@ -24,6 +24,9 @@ var Character = Class.extend({
     healthMax: 100,
     dead: false,
 
+    canMoveRight: false,
+    canMoveLeft: false,
+
     init: function() {
         this.movementSpeed = 1;
         this.jumpSpeed = 10;
@@ -48,6 +51,9 @@ var Character = Class.extend({
 
         this.txCorpse = new Image();
         this.txCorpse.src = 'assets/textures/enemy_dead.png';
+
+        this.canMoveRight = false;
+        this.canMoveLeft = true;
     },
 
     generateHurtSprite: function() {
@@ -186,13 +192,61 @@ var Character = Class.extend({
             }
         }
 
-        /*** Collision detection ***/
-        var bounds = this.getRect();
+        /*** Collision detection with blocks ***/
+        var characterBounds = this.getRect();
 
-        if (bounds.bottom > Renderer.canvas.height) {
-            this.velocity.y = 0;
-            this.position.y = Renderer.canvas.height - bounds.height;
-            this.canJump = true; // restore jumping powers if we have landed safely
+        for (var i = 0; i < Map.entities.length; i++) {
+            var entity = Map.entities[i];
+
+            if (entity.isBlock) {
+                var blockBounds = entity.getRect();
+
+                var rightBlocked = false;
+                var leftBlocked = false;
+
+                if (Utils.rectIntersects(characterBounds, blockBounds)) {
+                    entity.collisionStatus = 'intersects';
+
+                    // Determine from what side we are colliding
+                    var xMargin = this.velocity.x;
+                    var yMargin = this.velocity.y;
+
+                    if (characterBounds.bottom >= (blockBounds.top)) {
+                        entity.collisionStatus = 'blocks';
+                        // We are on top, landing a jump
+                        this.velocity.y = 0;
+                        this.position.y = blockBounds.top - this.size.h;
+                        this.canJump = true; // restore jumping powers if we have landed safely
+                    }
+
+                    // If we are to the right of this block, our left side is blocked
+                    var isAbove = characterBounds.top <= blockBounds.top;
+                    var isBelow = characterBounds.bottom >= blockBounds.bottom;
+
+                    if (!isAbove && !isBelow) {
+                        if (characterBounds.right >= blockBounds.right) {
+                            entity.collisionStatus = 'blocks';
+                            if (this.velocity.x < 0) {
+                                this.velocity.x = 0;
+                            }
+                            this.position.x = blockBounds.right;
+                            leftBlocked = true;
+                        } else if (characterBounds.left <= blockBounds.left) {
+                            entity.collisionStatus = 'blocks';
+                            if (this.velocity.x > 0) {
+                                this.velocity.x = 0;
+                            }
+                            this.position.x = blockBounds.left;
+                            rightBlocked = true;
+                        }
+                    }
+                } else {
+                    entity.collisionStatus = 'none';
+                }
+
+                this.canMoveLeft = !leftBlocked;
+                this.canMoveRight = !rightBlocked;
+            }
         }
 
         /*** Hurt animation ***/

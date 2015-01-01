@@ -33,12 +33,17 @@ var Enemy = Character.extend({
             this.position.x -= this.movementSpeed;
         }
 
-        if (this.position.x <= 0 && !this.facingEast) {
+        if ((this.position.x <= 0 || !this.canMoveLeft) && !this.facingEast) {
             this.facingEast = true;
         }
 
-        if (this.position.x >= Renderer.canvas.width && this.facingEast) {
+        if ((this.position.x >= (Map.width * 16) || !this.canMoveRight) && this.facingEast) {
             this.facingEast = false;
+        }
+
+        /*** Randomly jump, sometimes ***/
+        if (Math.random() >= 0.995 && this.canJump) {
+            this.jump();
         }
 
         /*** Collision with player ***/

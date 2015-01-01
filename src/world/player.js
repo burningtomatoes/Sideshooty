@@ -124,12 +124,12 @@ var Player = Character.extend({
         }
 
         /*** Input ***/
-        if (Keyboard.isKeyDown(KeyEvent.DOM_VK_LEFT) || Keyboard.isKeyDown(KeyEvent.DOM_VK_A)) {
+        if ((Keyboard.isKeyDown(KeyEvent.DOM_VK_LEFT) || Keyboard.isKeyDown(KeyEvent.DOM_VK_A)) && this.canMoveLeft) {
             this.position.x -= this.movementSpeed;
             this.facingEast = false;
         }
 
-        if (Keyboard.isKeyDown(KeyEvent.DOM_VK_RIGHT) || Keyboard.isKeyDown(KeyEvent.DOM_VK_D)) {
+        if ((Keyboard.isKeyDown(KeyEvent.DOM_VK_RIGHT) || Keyboard.isKeyDown(KeyEvent.DOM_VK_D)) && this.canMoveRight) {
             this.position.x += this.movementSpeed;
             this.facingEast = true;
         }
