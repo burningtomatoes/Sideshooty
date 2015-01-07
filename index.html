@@ -8,16 +8,19 @@
 <body>
 
     <div id="hud">
+        <h1 class="score-count">0</h1>
         <b>Ammo:</b> <span class="ammo-count">..</span><br />
         <b>Health:</b> <span class="health-count">..</span><br />
     </div>
 
     <div id="ded">
         <h1>You are dead.</h1>
-        <h2>Christmas has been stolen by corporate America.</h2>
-        <h2>Also, your wife.</h2>
-        <h2>And it's all your fault.</h2>
-        <h3>Press SPACE to restart</h3>
+        <hr />
+        <h2>Christmas has been stolen by corporate America. Also, your wife.</h2>
+        <h2>And you failed to stop them! You have failed as a father!</h2>
+        <h3><em>(Press SPACE to restart)</em></h3>
+        <hr />
+        <h1>Final score: <span class="score-count"></span></h1>
     </div>
 
     <canvas id="game" style="display: none" width="320" height="180"></canvas>

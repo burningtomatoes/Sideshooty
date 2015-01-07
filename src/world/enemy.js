@@ -71,11 +71,21 @@ var Enemy = Character.extend({
                 Camera.rumble(5, 2);
                 this.hurt(Map.player, 33);
                 Map.player.jump();
+
+                Map.player.score += 100;  // awesome
+                Map.player.syncHud();
             } else {
                 Map.player.hurt(this, 10);
             }
         }
 
         this._super();
+    },
+
+    hurt: function(src, dmg) {
+        Map.player.score += dmg;
+        Map.player.syncHud();
+
+        this._super(src, dmg);
     }
 });

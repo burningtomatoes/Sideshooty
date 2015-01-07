@@ -11,10 +11,13 @@ var Player = Character.extend({
     weaponBackfire: 0,
     isFiring: false,
 
+    score: 0,
+
     init: function() {
         this._super();
 
         this.position = { x: 160, y: 160};
+        this.score = 0;
 
         this.txBody.src = 'assets/textures/steve.png';
 
@@ -72,6 +75,9 @@ var Player = Character.extend({
 
         var $healthCount = $('#hud .health-count');
         $healthCount.text(this.healthNow + '/' + this.healthMax);
+
+        var $scoreCount = $('.score-count');
+        $scoreCount.text(this.score);
     },
 
     fire: function() {
