@@ -1,17 +1,19 @@
 var Enemy = Character.extend({
     position: { x: 25, y: 155},
 
+    stuckFrames: 0,
+
     init: function() {
         this._super();
 
         this.txBody.src = 'assets/textures/enemy.png';
         this.size = { w: 15, h: 20 };
 
-        this.facingEast = Math.random() >= 0.25;
-
         this.position = { x: 0, y: 0 };
-        this.position.x = Math.round(Math.random() * 10 * (20 + Math.random()));
-        this.position.y = Math.round(Math.random() * 10 * (16 + Math.random()));
+        this.position.x = Math.round(Math.random() * 20) + 160 + Math.round(Math.random() * 160);
+        this.position.y = Math.round(Math.random() * 20) + 160  + Math.round(Math.random() * 160);
+        this.facingEast = !(Math.random() >= 0.25);
+        this.jumpSpeed = 8;
     },
 
     die: function() {
@@ -27,22 +29,34 @@ var Enemy = Character.extend({
         }
 
         /*** Move from side to side until we can no more ***/
-        if (this.facingEast) {
+        if (this.facingEast && this.canMoveRight) {
             this.position.x += this.movementSpeed;
-        } else {
+        } else if (!this.facingEast && this.canMoveLeft) {
             this.position.x -= this.movementSpeed;
         }
 
         if ((this.position.x <= 0 || !this.canMoveLeft) && !this.facingEast) {
-            this.facingEast = true;
-        }
+            this.stuckFrames++;
 
-        if ((this.position.x >= (Map.width * 16) || !this.canMoveRight) && this.facingEast) {
-            this.facingEast = false;
+            if (this.stuckFrames > 10) {
+                this.facingEast = true;
+                this.stuckFrames = 0;
+            }
+        }
+        else if ((this.position.x >= (Map.width * 16) || !this.canMoveRight) && this.facingEast) {
+            this.stuckFrames++;
+
+            if (this.stuckFrames > 10) {
+                this.facingEast = false;
+                this.stuckFrames = 0;
+            }
+        }
+        else {
+            this.stuckFrames = 0;
         }
 
         /*** Randomly jump, sometimes ***/
-        if (Math.random() >= 0.995 && this.canJump) {
+        if (Math.random() >= 0.980 && this.canJump) {
             this.jump();
         }
 
