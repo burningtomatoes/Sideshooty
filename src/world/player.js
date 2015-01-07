@@ -69,6 +69,9 @@ var Player = Character.extend({
         } else {
             $ammoCount.removeClass('reloading');
         }
+
+        var $healthCount = $('#hud .health-count');
+        $healthCount.text(this.healthNow + '/' + this.healthMax);
     },
 
     fire: function() {
@@ -109,6 +112,8 @@ var Player = Character.extend({
         }
 
         this._super(source, damage);
+
+        this.syncHud();
     },
 
     die: function() {
