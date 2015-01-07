@@ -87,3 +87,20 @@ canvas {
 #ded h1, #ded h2, #ded h3 {
     margin: 20px;
 }
+
+#score-callouts {
+    text-align: center;
+    position: fixed;
+    bottom: 150px;
+    color: #fff;
+    font-size: 32px;
+    z-index: 999999999;
+    left: 0;
+    right: 0;
+    width: 100%;
+}
+#score-callouts span {
+    padding: 5px;
+    display: block;
+    width: 100%;
+}

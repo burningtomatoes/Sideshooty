@@ -80,6 +80,21 @@ var Player = Character.extend({
         $scoreCount.text(this.score);
     },
 
+    doScore: function(amount, reason) {
+        this.score += amount;
+        this.syncHud();
+
+        if (reason != null && reason.length > 0) {
+            var $callout = $('<span />')
+                .text(reason + ' +' + amount)
+                .hide()
+                .appendTo($('#score-callouts'))
+                .fadeIn('fast', function() {
+                    $(this).delay(2500).fadeOut('fast');
+                });
+        }
+    },
+
     fire: function() {
         var projectile = new Projectile(this);
         projectile.position = {

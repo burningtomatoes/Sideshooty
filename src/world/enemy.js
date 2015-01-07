@@ -2,6 +2,7 @@ var Enemy = Character.extend({
     position: { x: 25, y: 155},
 
     stuckFrames: 0,
+    wasJumpHit: false,
 
     init: function() {
         this._super();
@@ -14,10 +15,21 @@ var Enemy = Character.extend({
         this.position.y = Math.round(Math.random() * 20) + 160  + Math.round(Math.random() * 160);
         this.facingEast = !(Math.random() >= 0.25);
         this.jumpSpeed = 8;
+        this.wasJumpHit = false;
     },
 
     die: function() {
         this._super();
+
+        if (this.velocity.y > 1 || this.velocity.y < -1) {
+            Map.player.doScore(200, 'Air kill!');
+        }
+
+        if (this.wasJumpHit) {
+            Map.player.doScore(300, 'Death by jump!');
+        } else {
+            Map.player.doScore(100, 'Killed it!');
+        }
 
         Sfx.play('death_groan.wav');
     },
@@ -71,20 +83,25 @@ var Enemy = Character.extend({
                 Camera.rumble(5, 2);
                 this.hurt(Map.player, 33);
                 Map.player.jump();
-
-                Map.player.score += 100;  // awesome
-                Map.player.syncHud();
+                Map.player.doScore(50);
+                this.wasJumpHit = true;
             } else {
                 Map.player.hurt(this, 10);
+                this.wasJumpHit = false;
             }
         }
 
+        var _wasHurting = this.isHurting;
+
         this._super();
+
+        if (_wasHurting && !this.isHurting) {
+            this.wasJumpHit = false;
+        }
     },
 
     hurt: function(src, dmg) {
-        Map.player.score += dmg;
-        Map.player.syncHud();
+        Map.player.doScore(dmg);
 
         this._super(src, dmg);
     }
