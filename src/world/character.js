@@ -28,7 +28,7 @@ var Character = Class.extend({
     canMoveLeft: false,
 
     init: function() {
-        this.movementSpeed = 1;
+        this.movementSpeed = 2;
         this.jumpSpeed = 10;
         this.canJump = true;
         this.canFire = true;
