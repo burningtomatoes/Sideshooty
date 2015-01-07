@@ -113,7 +113,7 @@ var Character = Class.extend({
         ctx.restore();
 
         if (window.DEBUG_PROJECTILES && !this.dead) {
-            var sq = this.getRect();
+            var sq = this.getPreCollisionRect();
 
             ctx.beginPath();
             ctx.rect(Camera.translateX(sq.left), Camera.translateY(sq.top), sq.width, sq.height);
@@ -170,6 +170,14 @@ var Character = Class.extend({
     update: function() {
         this.lastPosition = { x: this.position.x, y: this.position.y };
 
+        if (!this.canMoveLeft && this.velocity.x < 0) {
+            this.velocity.x = 0;
+        }
+
+        if (!this.canMoveRight && this.velocity.x > 0) {
+            this.velocity.x = 0;
+        }
+
         /*** Movement processing ***/
         this.position.x += this.velocity.x;
         this.position.y += this.velocity.y;
@@ -194,6 +202,10 @@ var Character = Class.extend({
 
         /*** Collision detection with blocks ***/
         var characterBounds = this.getRect();
+        var characterBoundsExtra = this.getPreCollisionRect();
+
+        var rightBlocked = false;
+        var leftBlocked = false;
 
         for (var i = 0; i < Map.entities.length; i++) {
             var entity = Map.entities[i];
@@ -201,53 +213,46 @@ var Character = Class.extend({
             if (entity.isBlock) {
                 var blockBounds = entity.getRect();
 
-                var rightBlocked = false;
-                var leftBlocked = false;
+                entity.collisionStatus = 'none';
 
+                // Vertical collision
                 if (Utils.rectIntersects(characterBounds, blockBounds)) {
-                    entity.collisionStatus = 'intersects';
-
                     // Determine from what side we are colliding
-                    var xMargin = this.velocity.x;
-                    var yMargin = this.velocity.y;
-
-                    if (characterBounds.bottom >= (blockBounds.top)) {
-                        entity.collisionStatus = 'blocks';
+                    if (this.velocity.y > 0) {
                         // We are on top, landing a jump
                         this.velocity.y = 0;
                         this.position.y = blockBounds.top - this.size.h;
                         this.canJump = true; // restore jumping powers if we have landed safely
                     }
+                    else if (this.velocity.y < 0) {
+                        this.velocity.y = 0;
+                        this.position.y = blockBounds.top + this.size.h;
+                        this.canJump = false;
+                    }
+                }
 
-                    // If we are to the right of this block, our left side is blocked
-                    var isAbove = characterBounds.top <= blockBounds.top;
-                    var isBelow = characterBounds.bottom >= blockBounds.bottom;
+                // Horizontal collision
+                var ix = false;
+                if (Utils.rectIntersects(characterBoundsExtra, blockBounds)) {
+                    if (blockBounds.top < characterBoundsExtra.bottom) {
+                        ix = true;
+                        entity.collisionStatus = 'intersects';
 
-                    if (!isAbove && !isBelow) {
-                        if (characterBounds.right >= blockBounds.right) {
-                            entity.collisionStatus = 'blocks';
-                            if (this.velocity.x < 0) {
-                                this.velocity.x = 0;
-                            }
-                            this.position.x = blockBounds.right;
+                        if (blockBounds.right < characterBounds.left) {
+                            entity.collisionStatus = 'blocked';
                             leftBlocked = true;
-                        } else if (characterBounds.left <= blockBounds.left) {
-                            entity.collisionStatus = 'blocks';
-                            if (this.velocity.x > 0) {
-                                this.velocity.x = 0;
-                            }
-                            this.position.x = blockBounds.left;
+                        }
+                        else if (blockBounds.left < characterBoundsExtra.right) {
+                            entity.collisionStatus = 'blocked';
                             rightBlocked = true;
                         }
                     }
-                } else {
-                    entity.collisionStatus = 'none';
                 }
-
-                this.canMoveLeft = !leftBlocked;
-                this.canMoveRight = !rightBlocked;
             }
         }
+
+        this.canMoveLeft = !leftBlocked;
+        this.canMoveRight = !rightBlocked;
 
         /*** Hurt animation ***/
         if (this.isHurting && this.hurtCounter <= 0) {
@@ -256,6 +261,14 @@ var Character = Class.extend({
         else if (this.hurtCounter > 0) {
             this.hurtCounter--;
         }
+    },
+
+    getPreCollisionRect: function() {
+        var baseRect = this.getRect();
+        baseRect.left -= 5;
+        baseRect.right += 5;
+        baseRect.width += 10;
+        return baseRect;
     },
 
     getRect: function() {
