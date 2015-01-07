@@ -15,6 +15,16 @@ $(document).ready(function() {
             alert('Map could not be loaded, sorry.');
         }
     });
+
+    // Bg music
+    var bgMusic = new Audio('assets/music/superpixelknightmegasquaredadventure.mp3');
+    bgMusic.addEventListener('ended', function() {
+        this.currentTime = 0;
+        this.load();
+        this.play();
+    }, false);
+    bgMusic.load();
+    bgMusic.play();
 });
 
 function isCanvasSupported(){
