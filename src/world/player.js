@@ -78,6 +78,9 @@ var Player = Character.extend({
 
         var $scoreCount = $('.score-count');
         $scoreCount.text(this.score);
+
+        var $enemyCount = $('.enemy-count');
+        $enemyCount.text(Map.getAliveEnemies());
     },
 
     doScore: function(amount, reason) {
@@ -140,7 +143,9 @@ var Player = Character.extend({
     die: function() {
         this._super();
 
-        $('#ded').show();
+        if (!$('#win').is(':visible')) {
+            $('#ded').show();
+        }
     },
 
     update: function() {

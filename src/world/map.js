@@ -49,6 +49,20 @@ var Map = {
         Camera.track(Map.player);
     },
 
+    getAliveEnemies: function() {
+        var count = 0;
+
+        for (var i = 0; i < this.entities.length; i++) {
+            var e = this.entities[i];
+
+            if (e.isEnemy && e.healthNow > 0) {
+                count++;
+            }
+        }
+
+        return count;
+    },
+
     clear: function() {
         Map.loaded = false;
         Map.entities = [];

@@ -3,6 +3,7 @@ var Enemy = Character.extend({
 
     stuckFrames: 0,
     wasJumpHit: false,
+    isEnemy: true,
 
     init: function() {
         this._super();
@@ -32,6 +33,12 @@ var Enemy = Character.extend({
         }
 
         Sfx.play('death_groan.wav');
+
+        if (Map.getAliveEnemies() == 0) {
+            Map.player.doScore(1000, 'Waifu saved!');
+            $('#win').show();
+            Map.player.hurt(Map.player, 1000);
+        }
     },
 
     update: function() {
