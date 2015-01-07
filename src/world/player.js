@@ -1,6 +1,5 @@
 var Player = Character.extend({
-    position: { x: 160, y: 160},
-
+    position: null,
     ammoInClip: 0,
     ammoClipSize: 0,
     reloadTime: 0,
@@ -14,6 +13,8 @@ var Player = Character.extend({
 
     init: function() {
         this._super();
+
+        this.position = { x: 160, y: 160};
 
         this.txBody.src = 'assets/textures/steve.png';
 
@@ -121,6 +122,7 @@ var Player = Character.extend({
             if (Keyboard.wasKeyPressed(KeyEvent.DOM_VK_SPACE)) {
                 // Restart game
                 Renderer.loadMap(Map.id);
+
             }
 
             this._super();
