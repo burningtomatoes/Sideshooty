@@ -1,4 +1,4 @@
-window.DEBUG_PROJECTILES = true;
+window.DEBUG_PROJECTILES = false;
 
 var Projectile = function(firedBy) {
     this.position = { x: 0, y: 0 };
