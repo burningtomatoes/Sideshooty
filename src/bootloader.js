@@ -25,6 +25,11 @@ $(document).ready(function() {
     }, false);
     bgMusic.load();
     bgMusic.play();
+
+    // Push goal
+    $('#push').fadeIn('fast', function() {
+        $('#push').delay(2000).fadeOut('fast');
+    });
 });
 
 function isCanvasSupported(){
