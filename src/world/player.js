@@ -1,5 +1,5 @@
 var Player = Character.extend({
-    position: { x: 25, y: 155},
+    position: { x: 160, y: 160},
 
     ammoInClip: 0,
     ammoClipSize: 0,
